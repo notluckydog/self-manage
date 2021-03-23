@@ -1,0 +1,2 @@
+# self-manage
+python wxpython
