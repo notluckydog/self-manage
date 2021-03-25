@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import wx
-from generic_bitmap_button import GenericBitmapButton
+from .generic_bitmap_button import GenericBitmapButton
 import wx.adv
 import datetime
 import time
-from my_Validator import MyNumberValidator
+from .my_Validator import MyNumberValidator
 from openpyxl import load_workbook
 from wx import NewIdRef
 import wx.lib.buttons as buttons
@@ -399,30 +400,15 @@ class Expenditure(wx.Panel):
 
 
 
-def main():
-
-    app = wx.App()
-    ex = Expenditure()
-    ex.Show()
-    app.MainLoop()
-
-
-if __name__ == '__main__':
-    main()
 
 
 
 
 
-class Read_Money(wx.Frame):
-    def __init__(self,parent):
-        super().__init__(parent,title=u'记账',
-                         style=wx.MINIMIZE|wx.SYSTEM_MENU|wx.CLOSE_BOX|wx.CAPTION)
 
-        self.initUi()
-        self.Center()
 
-    def initUi(self):
-        self.SetBackgroundColour("white")
+
+
+
 
 

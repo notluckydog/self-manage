@@ -13,7 +13,7 @@ class BottomPanel(wx.Panel):
         self.SetBackgroundColour('#F0F0F0')
 
         # Box1用来显示天气等相关信息
-        Box1 = wx.BoxSizer(wx.VERTICAL)
+        '''Box1 = wx.BoxSizer(wx.VERTICAL)
         canshu = weatherforlifestyle()
 
         icon = canshu[0]
@@ -27,8 +27,8 @@ class BottomPanel(wx.Panel):
                                         wx.ID_ANY, wx.Bitmap(file, wx.BITMAP_TYPE_ANY))
         Box1.Add(weather_image, flag=wx.ALIGN_CENTER, border=8)
 
-        '''weather_text = wx.StaticText(self, label=str(text))
-        Box1.Add(weather_text, flag=wx.RIGHT | wx.ALIGN_CENTER, border=8)'''
+        weather_text = wx.StaticText(self, label=str(text))
+        Box1.Add(weather_text, flag=wx.RIGHT | wx.ALIGN_CENTER, border=8)
 
         weather_temp = wx.StaticText(self, label=str(text) + '   ' + str(temp) + "℃")
         Box1.Add(weather_temp, flag=wx.RIGHT | wx.ALIGN_CENTER)
@@ -36,7 +36,7 @@ class BottomPanel(wx.Panel):
         t = time.localtime(time.time())
         st = time.strftime('%Y-%m-%d ', t)
         str2 = wx.StaticText(self, label=st)
-        Box1.Add(str2, flag=wx.RIGHT | wx.ALIGN_CENTER)
+        Box1.Add(str2, flag=wx.RIGHT | wx.ALIGN_CENTER)'''
 
         # 音乐播放按钮，手动开启
         play = wx.BitmapButton(self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize,
@@ -63,7 +63,7 @@ class BottomPanel(wx.Panel):
 
         sizer1.Add(self.ticker,flag = wx.RIGHT, border=30)
         sizer1.AddSpacer(20)
-        sizer1.Add(Box1,flag = wx.RIGHT, border=10)
+        #sizer1.Add(Box1,flag = wx.RIGHT, border=10)
         sizer1.Add(c1, flag=wx.RIGHT, border=10)
 
         self.SetSizer(sizer1)

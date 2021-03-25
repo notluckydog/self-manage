@@ -1,8 +1,44 @@
 import wx
+from .account_expenditure  import Expenditure
+from .account_income import InCome
+from .clock_daily import ClockDaily
+from .clock_details import ClockDetail
+from pubsub import pub
 
 class RightPanel(wx.Panel):
     def __init__(self,parent):
         super().__init__(parent)
+        self.update =0
+        pub.subscribe(self.get_update,'ui_update')
+
+        self.InitUI()
+
+    def InitUI(self):
+        self.get_update()
+        panel = wx.Panel(self)
+        if self.update ==0 :
+            panel = ClockDaily(self)
+
+        if self.update == 1:
+            panel = ClockDetail(self)
+
+        if self.update==10 :
+            panel = Expenditure(self)
+
+        if self.update ==11:
+            panel = InCome(self)
+        #panel = RecordClock(self)
+        #panel = Expenditure(self)
+        self.Sizer = wx.BoxSizer()
+        self.Sizer.Add(panel, 1, wx.EXPAND)
+
+    def get_update(self,note):
+        self.update = note
+
+class RecordClock(wx.Panel):
+    def __init__(self,parent):
+        super().__init__(parent)
+
         self.InitUI()
 
     def InitUI(self):
@@ -54,7 +90,6 @@ class RightPanel(wx.Panel):
         self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.account)
         self.reading.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.account, border=15)
-
 
         # 心情状况
         Box3 = wx.BoxSizer(wx.HORIZONTAL)
@@ -109,5 +144,3 @@ class RightPanel(wx.Panel):
 
     def OnClick(self, e):
         pass
-
-
