@@ -2,7 +2,7 @@ import wx
 import wx.grid as grid
 from openpyxl import load_workbook
 
-class Data_list(grid.Grid):
+class Account_list(grid.Grid):
     def __init__(self):
         grid.Grid.__init__(self)
 

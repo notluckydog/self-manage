@@ -34,7 +34,7 @@ class MainFrame(wx.Frame):
 
     def setupIcon(self):
         ## 图标的实现
-        self.img_path = './asset/image/美食（水果）.png'
+        self.img_path = './assets/image/美食（水果）.png'
 
         icon = wx.Icon(self.img_path, type=wx.BITMAP_TYPE_PNG)
         self.SetIcon(icon)

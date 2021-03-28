@@ -217,7 +217,7 @@ class Expenditure(wx.Panel):
         box2.Add(self.time1,flag=wx.LEFT,border=10)
         box2.Add(self.t_acount,flag = wx.RIGHT|wx.EXPAND,border =10)
 
-        self.t_remarks = wx.TextCtrl(self,-1, "备注",size = (50,100))
+        self.t_remarks = wx.TextCtrl(self,-1, "备注",size =(300,150))
         self.Bind(wx.EVT_TEXT, self.EvtText2, self.t_remarks)
 
         self.bt_commit = GenericBitmapButton(self, 'commit', -1)
@@ -229,11 +229,11 @@ class Expenditure(wx.Panel):
         box3.AddSpacer(10)
         box3.Add(box1,flag=wx.ALIGN_CENTER)
         box3.Add(box2,flag = wx.ALIGN_CENTER)
-        box3.Add(self.t_remarks,flag=wx.EXPAND|wx.ALL,border=20)
+        box3.Add(self.t_remarks,flag=wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT,border=20)
         box4= wx.BoxSizer(wx.HORIZONTAL)
-        box4.AddSpacer(280)
+        box4.AddSpacer(600)
         box4.Add(self.bt_commit,flag = wx.RIGHT,border = 10)
-        box3.Add(box4,flag = wx.RIGHT,border = 10)
+        box3.Add(box4,flag =wx.ALIGN_CENTER,border = 10)
 
         self.SetSizer(box3)
 
@@ -331,24 +331,16 @@ class Expenditure(wx.Panel):
             dlg.Destroy()
             
         while a.value:
-            #使用遍历的方式来对单元格进行检查
-            #如果获取的单元格的内容为空，则表示可以写入
-            #b参数为行数
-            #print(b)
-            #print(type(a.value))
-            #print (len(a))
-            
 
             b+=1
-            #i_column +=1
-            #print('行数是'+str(b))
+
             a=ws['A'+str(b)]
-            #print(a.value)
+
             
             if b>=1500:
                 
                 break
-                #a = ws.cell(row = i_row,column = i_column)
+
 
         if self.n_kind and self.n_time and self.n_acount:
 
@@ -365,6 +357,13 @@ class Expenditure(wx.Panel):
                 ws['A1'] = b+1
 
                 wb.save('./data/account.xlsx')
+                dlg = wx.MessageDialog(self, '写入成功',
+                                       '成功',
+                                       wx.OK | wx.ICON_INFORMATION
+                                       # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
+                                       )
+                dlg.ShowModal()
+                dlg.Destroy()
 
             except:
                 dlg = wx.MessageDialog(self, '数据写入失败',
@@ -374,7 +373,7 @@ class Expenditure(wx.Panel):
                                        )
                 dlg.ShowModal()
                 dlg.Destroy()
-            #print('文件写入成功')
+
 
         else:
             dlg = wx.MessageDialog(self, '请填写完整数据',
@@ -389,13 +388,6 @@ class Expenditure(wx.Panel):
         time.sleep(1)
         self.bt_commit.Enable(True)
 
-        dlg = wx.MessageDialog(self, '写入成功',
-                               '成功',
-                               wx.OK | wx.ICON_INFORMATION
-                               # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                               )
-        dlg.ShowModal()
-        dlg.Destroy()
 
 
 

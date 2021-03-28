@@ -5,7 +5,8 @@ from pubsub import pub
 class LeftPanel(wx.Panel):
     def __init__(self,parent):
         super().__init__(parent)
-        self.update =0
+        #self.update =0
+        pub.sendMessage('ui_update', note=0)
 
 
         self.InitUi()
@@ -19,6 +20,8 @@ class LeftPanel(wx.Panel):
 class RecordDetail(wx.Panel):
     def __init__(self,parent):
         super().__init__(parent)
+        self.update =0
+        #通过pypubsub来进行组件间通信
         pub.sendMessage('ui_update',note =0)
 
         self.InitUi()
@@ -30,8 +33,8 @@ class RecordDetail(wx.Panel):
         self.tree = wx.TreeCtrl(self,-1, wx.DefaultPosition, wx.DefaultSize,
                                wx.TR_HAS_BUTTONS
                                #| wx.TR_EDIT_LABELS
-                               | wx.TR_MULTIPLE)
-                               #| wx.TR_HIDE_ROOT
+                               | wx.TR_MULTIPLE
+                               | wx.TR_HIDE_ROOT)
 
         self.root = self.tree.AddRoot(u"功能列表")
 
@@ -80,29 +83,34 @@ class RecordDetail(wx.Panel):
         if item in self.clock :
             self.update = 0+self.clock.index(item)
             print(self.update)
+            pub.sendMessage('ui_update', note=self.update)
             return self.update
 
         if item in self.account:
             self.update = 10+self.account.index(item)
             print(self.update)
+            pub.sendMessage('ui_update', note=self.update)
             return self.update
 
         if item in self.monitor:
             self.update = 20+self.monitor.index(item)
             print(self.update)
+            pub.sendMessage('ui_update', note=self.update)
             return self.update
 
         if item in self.tool:
             self.update = 30+self.tool.index(item)
             print(self.update)
+            pub.sendMessage('ui_update', note=self.update)
             return self.update
 
         if item in self.game:
             self.update = 40+self.game.index(item)
             print(self.update)
+            pub.sendMessage('ui_update', note=self.update)
             return self.update
 
-        pub.sendMessage('ui_update',note=self.update)
+
 
     #def updatedisplay(self):
         #pub.sendMessage(self.update,'ui_update')

@@ -55,18 +55,21 @@ class BottomPanel(wx.Panel):
         self.ticker.SetText(text_message)
         sizer1 = wx.BoxSizer(wx.HORIZONTAL)
         #sizer1.Add(sizer, flag=wx.LEFT, border=10)
-        sizer1.AddSpacer(700)
+        sizer1.AddSpacer(10)
         sizer1.Add(str3, border=30)
         sizer1.AddSpacer(20)
         sizer1.Add(play, border=10)
         sizer1.AddSpacer(20)
 
-        sizer1.Add(self.ticker,flag = wx.RIGHT, border=30)
+        sizer1.Add(self.ticker,flag = wx.EXPAND|wx.RIGHT, border=30)
         sizer1.AddSpacer(20)
         #sizer1.Add(Box1,flag = wx.RIGHT, border=10)
         sizer1.Add(c1, flag=wx.RIGHT, border=10)
 
-        self.SetSizer(sizer1)
+        sizer2 =wx.BoxSizer(wx.VERTICAL)
+        sizer2.Add(sizer1,flag = wx.ALIGN_RIGHT|wx.RIGHT,border=10)
+
+        self.SetSizer(sizer2)
 
     def MusicPlay(self):
         pass
