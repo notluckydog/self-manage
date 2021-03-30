@@ -302,24 +302,16 @@ class Expenditure(wx.Panel):
 
         print(self.n_time)
         print('1')
-        #print(self.n_acount)
 
-        #print(self.n_remark)
-        #print(self.n_kind)
 
         try:
             wb=load_workbook('./data/account.xlsx')
             ws=wb['支出']
-            #print("文件打开成功")
-            #i_row = 1
-            #i_column = 1
+
             c=ws['A1']
             b=int(c.value)    #excel 单元格第一格用来记录上次写入的位置
             a=ws.cell(row = b,column = 1)
-            #print(str(b.value))
-            #print('单元格获取成功')
-            #c=ws['A1']
-            #print(c.value)
+
 
         except:
             dlg = wx.MessageDialog(self, '文件打开失败',
