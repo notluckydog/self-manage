@@ -2,13 +2,10 @@ import wx
 import wx.grid as grid
 from openpyxl import load_workbook
 
-class Account_list(grid.Grid):
+class Account_Grid(grid.Grid):
     def __init__(self):
         grid.Grid.__init__(self)
-
         self.CreateGrid(20,4)
-
-
         self.x_time = []
         self.x_kind = []
         self.x_account = []
@@ -65,3 +62,11 @@ class Account_list(grid.Grid):
             dlg.ShowModal()
             dlg.Destroy()
 
+
+class Account_List(wx.Panel):
+    def __int__(self,parent):
+        super().__init__(parent)
+        self.panel = wx.Panel(self)
+        self.panel = Account_Grid(self)
+        self.Sizer = wx.BoxSizer()
+        self.Sizer.Add(self.panel, 1, wx.EXPAND)

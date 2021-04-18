@@ -3,7 +3,8 @@ import time
 import wx
 import os
 from openpyxl import load_workbook
-from .Dialogs import NotExsit, AddSuccess
+from .Dialogs import NotExsit, AddSuccess,HavedExit,BDOpenFail
+import sqlite3
 
 path1 = os.path.abspath('..')
 excel_path = './data/excel/2020-11.xlsx'
@@ -13,17 +14,15 @@ sampleList = ['很好', '较好', '一般', '较差', '很差']
 class ClockDaily(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
-
-        #用来记录打卡项，也方便日后生成或者删除打卡项
-        self.clock_list = ['时间','早起','早睡','日语','英语','记账','心情状况','身体状况']
-        self.clock_data = ['否' for i in range(len(self.clock_list))]
         self.is_getup = '否'
         self.is_sleep = '否'
         self.is_Japanese = '否'
         self.is_English = '否'
         self.is_reading = '否'
         self.is_study = '否'
-        self.is_study = '否'
+        self.is_account = '否'
+        self.mood = '一般'
+        self.body = '一般'
         self.InitUi()
 
     def InitUi(self):
@@ -31,46 +30,39 @@ class ClockDaily(wx.Panel):
         panel = wx.Panel(self)
 
         self.SetBackgroundColour('white')
+        Box1.AddSpacer(90)
 
-        self.str4 = wx.StaticText(self, label='   ', size=(90, 100))
-        Box1.Add(self.str4, border=10)
+        #是否早起
         self.get_up = wx.CheckBox(self, label=u"早起", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.get_up)
         self.get_up.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.get_up, border=15)
 
         # 是否早睡
         self.sleep = wx.CheckBox(self, label=u"早睡", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.sleep)
         self.sleep.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.sleep, border=15)
 
         # 是否学习了日语
         self.Japanese = wx.CheckBox(self, label=u"日语学习", size=(90, 30))
-        #self.Japanese.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.Japanese)
         self.Japanese.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.Japanese, border=15)
 
         # 是否背诵了英语单词
         self.English = wx.CheckBox(self, label=u"英语学习", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.English)
         self.English.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.English, border=15)
 
         # 是否进行了学习
         self.study = wx.CheckBox(self, label=u"学习", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.study)
         self.study.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.study, border=15)
 
         # 是否有做阅读
         self.reading = wx.CheckBox(self, label=u"阅读", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.reading)
         self.reading.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.reading, border=15)
 
         self.account = wx.CheckBox(self, label=u"记账", size=(90, 30))
-        #self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox, self.account)
         self.reading.SetValue(False)  # 设置当前是否被选中
         Box1.Add(self.account, border=15)
 
@@ -80,7 +72,7 @@ class ClockDaily(wx.Panel):
         Box3.Add(self.mood1, border=5)
         Box3.AddSpacer(20)
         self.ch = wx.Choice(self, -1, (60, 50), choices=sampleList, )
-        #self.Bind(wx.EVT_CHOICE, self.EvtChoice1, self.ch)
+        self.Bind(wx.EVT_CHOICE,self.EvtChoice0,self.ch)
         Box3.Add(self.ch, flag=wx.EXPAND | wx.RIGHT, border=20)
         Box1.AddSpacer(10)
         Box1.Add(Box3, border=20)
@@ -88,11 +80,10 @@ class ClockDaily(wx.Panel):
         # 打卡项，身体状况
         Box4 = wx.BoxSizer(wx.HORIZONTAL)
         self.body1 = wx.StaticText(self, label=u"身体状况", size=(50, 20))
-
         Box4.Add(self.body1, border=15)
-        Box4.AddSpacer(10)
+        Box4.AddSpacer(20)
         self.ch1 = wx.Choice(self, -1, (60, 50), choices=sampleList)
-        #self.Bind(wx.EVT_CHOICE, self.EvtChoice2, self.ch1)
+        self.Bind(wx.EVT_CHOICE, self.EvtChoice1, self.ch1)
         Box4.Add(self.ch1, flag=wx.EXPAND | wx.RIGHT, border=20)
 
         Box1.AddSpacer(20)
@@ -101,10 +92,10 @@ class ClockDaily(wx.Panel):
         # 用来填充
 
         Box1.Add((-1, 10))
+
         # 提交按钮
         self.summit = wx.Button(self, label=u"提交", size=(90, 30))
         self.Bind(wx.EVT_BUTTON, self.OnClick, self.summit)
-
         Box1.Add(self.summit, border=15)
 
         Box2 = wx.BoxSizer(wx.VERTICAL)
@@ -117,25 +108,11 @@ class ClockDaily(wx.Panel):
 
         self.SetSizer(Box)
 
-    def EvtCheckBox(self, e):
-        if e.GetEventObject().GetLabel() == '早起':
-            e.Skip()
-        elif e.GetEventObject().GetLabel() == '早睡':
-            e.Skip()
-        elif e.GetEventObject().GetLabel() == '日语学习':
-            e.Skip()
-        elif e.GetEventObject().GetLabel() == '英语学习':
-            e.Skip()
-        elif e.GetEventObject().GetLabel() == '学习':
-            e.Skip()
-        elif e.GetEventObject().GetLabel() == '阅读':
-            e.Skip()
+    def EvtChoice0(self,e):
+        self.mood = e.GetString()
 
     def EvtChoice1(self,e):
-        pass
-
-    def EvtChoice2(self,e):
-        pass
+        self.body = e.GetString()
 
     def OnClick(self, e):
         if e.GetEventObject() == self.summit:
@@ -146,66 +123,99 @@ class ClockDaily(wx.Panel):
             if self.Japanese.GetValue():
                 self.is_Japanese = '是'
             if self.English.GetValue():
-                self.is_English ='是'
-
+                self.is_English = '是'
             if self.reading.GetValue():
                 self.is_reading = '是'
-
             if self.study.GetValue():
                 self.is_study = '是'
             if self.account.GetValue():
-                self.is_study = '是'
+                self.is_account = '是'
 
+        self.excel_save()
+
+        #self.db_save()
+
+    def excel_save(self):
         try:
 
             wb=load_workbook(excel_path)
             ws=wb['每日打卡']
-            print("文件打开成功")
-            c = ws['A1']
-            b = int(c.value)  # excel 单元格第一格用来记录上次写入的位置
-            a=ws['A'+str(b)]
-            print('单元格获取成功')
+            b = int(ws['A1'].value)  # excel 单元格第一格用来记录上次写入的位置
             a = ws.cell(row=b, column=1)
+
+            # 用来防止误操作导致b的值与实际值不相符，再做一次判断
+            while a.value:
+                b += 1
+                a = ws['A' + str(b)]
+                if b >= 1500:
+                    break
 
         except:
             dlg = NotExsit(None, -1)
             dlg.ShowModal()
             dlg.Destroy()
 
-        #用来防止误操作导致b的值与实际值不相符，再做一次判断
-        while a.value:
-            b += 1
-            a = ws['A' + str(b)]
-            if b >= 1500:
-                break
+
         #写入数据
         try:
-            print('写数据')
-            ws['A'+str(b)]=time.strftime('%Y-%m-%d', time.localtime())
-            print('1')
-            ws['B'+str(b)]= self.is_getup
-            print('2')
-            ws['D'+str(b)]= self.is_Japanese
-            print('3')
-            ws['E'+str(b)]= self.is_English
-            print('4')
-            ws['F'+str(b)]=self.is_study
-            print('5')
-            ws['H'+str(b)]=self.is_reading
-            print('6')
-            ws['I'+str(b)]=self.is_sleep
-            print('写入数据')
-            ws['A'+1] = b+1
-            wb.save(excel_path)
-            print('写入成功')
-            dlg = AddSuccess(None,-1)
-            print('对话框')
-            dlg.ShowModal()
-            dlg.Destroy()
+
+            #判断今天是否已经打过卡
+            if ws['A'+str(b-1)].value == time.strftime('%Y-%m-%d', time.localtime()):
+                dlg = HavedExit(None, -1)
+                dlg.ShowModal()
+                dlg.Destroy()
+            else:
+                b = str(b)
+                ws['A'+b]=time.strftime('%Y-%m-%d', time.localtime())
+                ws['B'+b]= self.is_getup
+                ws['C'+b]= self.is_sleep
+                ws['D'+b]= self.is_Japanese
+                ws['E'+b]=self.is_English
+                ws['F'+b]=self.is_study
+                ws['G'+b]=self.is_reading
+                ws['H'+b] = self.is_account
+                ws['I'+b] = self.mood
+                ws['J'+b] = self.body
+
+
+                ws['A'+str(1)] = int(b)+1
+                wb.save(excel_path)
+
+                dlg = AddSuccess(None,-1)
+                dlg.ShowModal()
+                dlg.Destroy()
 
         except:
             dlg=NotExsit(None,-1)
             dlg.ShowModal()
             dlg.Destroy()
+
+    def db_save(self):
+        #将数据保存在数据库中
+        #这里暂时用sqlite3来保存信息
+
+        time1 = time.strftime('%Y-%m-%d', time.localtime())
+        try:
+            #尝试连接数据库
+            conn = sqlite3.connect('test1.db')
+            print('1')
+            cursor = conn.cursor()     #创建游标
+            print('2')
+            #判断表是否存在，若不存在，则新建该表
+            cursor.execute(
+            '''CREATE TABLE IF NOT EXISIT clock_daily
+            (x_time text,get_up text,sleep text, Japanese text,English text,study text,
+            reading text,account text,mood text,body text)'''
+            )
+            print('3')
+            cursor.execute('INSERT INTO clock_daily VALUES '
+                           '(?,?,?,?,?,?,?)',(time1,self.is_getup,self.is_sleep
+                            ,self.is_Japanese,self.is_English,self.is_study,self.is_reading,self.is_account,self.mood,self.body))
+            print('4')
+        except:
+            dlg = BDOpenFail(None, -1)
+            dlg.ShowModal()
+            dlg.Destroy()
+
 
 

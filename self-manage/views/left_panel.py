@@ -42,8 +42,8 @@ class RecordDetail(wx.Panel):
         self.clock = ['每日打卡', '每月记录']
         self.account = ['每日支出','每日收入', '消费流水', '月度情况', '年度情况']
         self.monitor = ['实时数据', '24小时趋势']
-        self.tool = ['绘画板', '计算器', ]
-        self.game = ['俄罗斯方块', '贪吃蛇']
+        self.tool = ['绘画板', '计算器','二维码生成器','图片转PDF','电子时钟' ]
+        self.game = ['俄罗斯方块', '贪吃蛇','天天酷跑']
         self.icon_function = wx.Image
 
         child1 = self.tree.AppendItem(self.root, u'打卡')

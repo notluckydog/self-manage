@@ -10,6 +10,7 @@ import images
 import wx.lib.buttons as buttons
 from .my_Validator import MyNumberValidator
 from wx import NewId
+from views.Dialogs import NotExsit,AddSuccess,WriteFail,IncompleteData
 
 
 income = ['薪资','退款','理财','兼职','还钱','借入','意外所得','报销','投资','其他']
@@ -241,13 +242,13 @@ class InCome(wx.Panel):
         self.SetSizer(box3)
 
     def EvtText1(self,e):
-        self.n_acount= float(e.GetString())
+        self.n_acount= str(e.GetString())
 
     def EvtText2(self,e):
         self.n_remark = e.GetString()
 
     def OnDateSelect(self,e):
-        self.n_time = str(e.GetDate())
+        self.n_time = str(e.GetDate())[0:10]
 
     def KindSelect(self,e):
         if e.GetId() == ID_00:
@@ -273,104 +274,59 @@ class InCome(wx.Panel):
 
     def Commit(self,e):
 
-        print(self.n_time)
-        print('1')
-        # print(self.n_acount)
+        self.excel_write()
 
-        # print(self.n_remark)
-        # print(self.n_kind)
+    def excel_write(self):
 
+        # 写入excel表格中
         try:
             wb = load_workbook('./data/account.xlsx')
             ws = wb['收入']
-            # print("文件打开成功")
-            # i_row = 1
-            # i_column = 1
-            c = ws['A1']
-            b = int(c.value)  # excel 单元格第一格用来记录上次写入的位置
+            b = int(ws['A1'].value)  # excel 单元格第一格用来记录上次写入的位置
             a = ws.cell(row=b, column=1)
-            # print(str(b.value))
-            # print('单元格获取成功')
-            # c=ws['A1']
-            # print(c.value)
 
         except:
-            dlg = wx.MessageDialog(self, '文件打开失败',
-                                   '失败',
-                                   wx.OK | wx.ICON_INFORMATION
-                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                   )
+            dlg = NotExsit(None, -1)
             dlg.ShowModal()
             dlg.Destroy()
 
+        # 再一次判断b值是否设置有错，防止出现删除消费记录但未更新的情况
         while a.value:
-            # 使用遍历的方式来对单元格进行检查
-            # 如果获取的单元格的内容为空，则表示可以写入
-            # b参数为行数
-            # print(b)
-            # print(type(a.value))
-            # print (len(a))
-
             b += 1
-            # i_column +=1
-            # print('行数是'+str(b))
             a = ws['A' + str(b)]
-            # print(a.value)
-
             if b >= 1500:
                 break
-                # a = ws.cell(row = i_row,column = i_column)
 
         if self.n_kind and self.n_time and self.n_acount:
 
             try:
-
-                ws['A' + str(b)] = self.n_time
-                # print('1')
-                ws['B' + str(b)] = self.n_kind
-                # print('2')
-                ws['C' + str(b)] = self.n_acount
-                # print('3')
-                ws['D' + str(b)] = self.n_remark
-                # print('4')
+                g = str(b)
+                ws['A' + g] = self.n_time
+                ws['B' + g] = self.n_kind
+                ws['C' + g] = self.n_acount
+                ws['D' + g] = self.n_remark
                 ws['A1'] = b + 1
 
                 wb.save('./data/account.xlsx')
-                dlg = wx.MessageDialog(self, '写入成功',
-                                       '成功',
-                                       wx.OK | wx.ICON_INFORMATION
-                                       # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                       )
+                dlg = AddSuccess(None, -1)
                 dlg.ShowModal()
                 dlg.Destroy()
+
 
             except:
-                dlg = wx.MessageDialog(self, '数据写入失败',
-                                       '失败',
-                                       wx.OK | wx.ICON_INFORMATION
-                                       # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                       )
+                dlg = WriteFail(None, -1)
                 dlg.ShowModal()
                 dlg.Destroy()
-            # print('文件写入成功')
+
 
         else:
-            dlg = wx.MessageDialog(self, '请填写完整数据',
-                                   '失败',
-                                   wx.OK | wx.ICON_INFORMATION
-                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                   )
+            dlg = IncompleteData(None, -1)
             dlg.ShowModal()
             dlg.Destroy()
 
         self.bt_commit.Enable(False)
         time.sleep(1)
         self.bt_commit.Enable(True)
-
-
-       
-
-
 
 
 def main():

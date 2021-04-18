@@ -5,7 +5,14 @@ from .clock_daily import ClockDaily
 from .clock_details import ClockDetail
 from pubsub import pub
 from .account_month import AccountMonth
-from .acount_list import Account_list
+from .acount_list import Account_List
+from .account_year import AccountYear
+from .tool_pic_to_pdf import Pic_to_PDF
+from .tool_QR import QR
+from .tool_Drawing import DoodleFrame
+from .tool_LEDClock import LEDClock,LEDClK
+from .game_Tetris import Tetris
+from .game_run import GameRun
 
 
 class RightPanel(wx.Panel):
@@ -44,12 +51,38 @@ class RightPanel(wx.Panel):
             self.panel = InCome(self)
 
         if self.update == 12:
-            self.panel =Account_list(self)
+            self.panel =Account_List(self)
 
         if self.update == 13:
             self.panel = AccountMonth(self)
         if self.update ==14:
+            self.panel = AccountYear(self)
+
+        if self.update ==30:
+            self.panel = DoodleFrame(self)
+
+        if self.update ==31:
             pass
+
+        if self.update ==32:
+            self.panel = QR(self)
+
+        if self.update ==33:
+            self.panel = Pic_to_PDF(self)
+
+        if self.update ==34:
+            self.panel = LEDClock(self)
+
+        if self.update ==40:
+            self.panel = Tetris(self)
+
+        if self.update ==41:
+            pass
+
+        if self.update ==42:
+            self.panel = GameRun(self)
+
+
         # panel = RecordClock(self)
         # panel = Expenditure(self)
         #self.Sizer.Destroy()

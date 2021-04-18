@@ -7,9 +7,9 @@ import wx.adv
 import time
 from openpyxl import load_workbook
 
-imcome = ['薪资','退款','理财','兼职','还钱','借入','意外所得','报销','投资','其他']
-expend = ['教育','餐饮','理财','日用','零食','交通','服饰美容','数码','住房','医疗']
-year_list = ['2020','2021','2022']
+imcome = [u'薪资',u'退款',u'转卖',u'兼职',u'还钱',u'借入',u'意外所得',u'报销',u'投资',u'其他']
+expend = [u'教育',u'餐饮',u'理财',u'日用',u'零食',u'交通',u'服饰美容',u'数码',u'住房',u'医疗']
+year_list = ['2020','2021','2022','2023']
 month_list = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
 
 
@@ -23,8 +23,8 @@ class AccountMonth(wx.Panel):
             pass
         else:
             self.X_month = self.X_month[1:2]
-        self.i_list = [1]*10     #用来记录收入列表
-        self.e_list = [1]*10     #用来记录支出列表
+        self.i_list = [0.1]*10     #用来记录收入列表
+        self.e_list = [0.1]*10     #用来记录支出列表
         self.i_space_list = [0.1]*10   #用来记录收入相关占比
         self.e_space_list = [0.1]*10   #用来记录支出相关占比
         self.i_count = 1
@@ -38,15 +38,11 @@ class AccountMonth(wx.Panel):
         # 准备数据
         self.GetIncome()
         self.GetExpendture()
-        values = [26, 17, 21, 29, 7, 10]
-        spaces = [0.05, 0.01, 0.01, 0.01, 0.01, 0.01]
-        labels = ['Python', 'JavaScript',
-                  'C++', 'Java', 'PHP', 'C']
         colors = ['dodgerblue', 'orangered','green','lime','yellow',
                   'limegreen', 'violet', 'gold', 'r','blue',]
 
-        self.f = Figure(figsize=(5,8),dpi=100,tight_layout=True
-                        )
+        #用来以饼状图的形式展示数据
+        self.f = Figure(figsize=(5,6),dpi=100,tight_layout=True)
         matplotlib.rcParams['font.sans-serif'] = ['SimHei']  # 用黑体显示中文
         matplotlib.rcParams['axes.unicode_minus'] = False
 
@@ -67,7 +63,8 @@ class AccountMonth(wx.Panel):
         canvas = FigureCanvas(self, -1, self.f)
         canvas.draw()
 
-        year_list = ['2020', '2021', '2022']
+        #增加年份、月份选择
+        year_list = ['2020', '2021', '2022','2023']
         self.ch_year = wx.Choice(self,-1,(85,18),choices = year_list)
         self.Bind(wx.EVT_CHOICE, self.OnChoices1, self.ch_year)
         self.t_year = wx.StaticText(self,label=u'年')
@@ -77,37 +74,15 @@ class AccountMonth(wx.Panel):
         self.Bind(wx.EVT_CHOICE,self.OnChoices2,self.ch_month)
         self.t_month = wx.StaticText(self,label=u'月')
 
-        box2 = wx.BoxSizer(wx.VERTICAL)
-        self.t_0  = wx.StaticText(self,-1,label = u'消费总额'+str(self.e_count))
-        self.t_00 = wx.StaticText(self,-1,label = expend[0]+': '+ str(self.e_list[0]))
-        self.t_01 = wx.StaticText(self,-1,label = expend[1]+': '+ str(self.e_list[1]))
-        self.t_02 = wx.StaticText(self,-1,label = expend[2]+': '+ str(self.e_list[2]))
-        self.t_03 = wx.StaticText(self, -1, label=expend[3] + ': ' + str(self.e_list[3]))
-        self.t_04 = wx.StaticText(self, -1, label=expend[4] + ': ' + str(self.e_list[4]))
-        self.t_05 = wx.StaticText(self, -1, label=expend[5] + ': ' + str(self.e_list[5]))
-        self.t_06 = wx.StaticText(self, -1, label=expend[6] + ': ' + str(self.e_list[6]))
-        self.t_07 = wx.StaticText(self, -1, label=expend[7] + ': ' + str(self.e_list[7]))
-        self.t_08 = wx.StaticText(self, -1, label=expend[8] + ': ' + str(self.e_list[8]))
-        self.t_09 = wx.StaticText(self, -1, label=expend[9] + ': ' + str(self.e_list[9]))
 
-        box2.Add(self.t_0, flag = wx.ALIGN_CENTER,border = 1)
-        box2.Add(self.t_00,flag = wx.ALIGN_CENTER,border =1)
-        box2.Add(self.t_01, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_02, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_03, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_04, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_05, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_06, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_07, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_08, flag=wx.ALIGN_CENTER, border=1)
-        box2.Add(self.t_09, flag=wx.ALIGN_CENTER, border=1)
-
-        box3 = wx.FlexGridSizer(11,2,5,5)#用来展示总支出，每项支出
+        #用来展示总支出与每项支出
+        box6 = wx.FlexGridSizer(6,4,10,10)
         self.t_ex = wx.StaticText(self,label=u'总支出')
-        self.t_ex_0 = wx.StaticText(self,label = str(self.e_count))
+        self.t_ex_0 = wx.StaticText(self,label = str(round(self.e_count,2)))
 
         self.t_ex_00 = wx.StaticText(self,label =expend[0])
         self.t_ex_01 = wx.StaticText(self,label = str(self.e_list[0]))
+
         self.t_ex_10 = wx.StaticText(self, label=expend[1])
         self.t_ex_11 = wx.StaticText(self, label=str(self.e_list[1]))
 
@@ -115,27 +90,28 @@ class AccountMonth(wx.Panel):
         self.t_ex_21 = wx.StaticText(self, label=str(self.e_list[2]))
 
         self.t_ex_30 = wx.StaticText(self, label=expend[3])
-        self.t_ex_31 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_31 = wx.StaticText(self, label=str(self.e_list[3]))
 
-        self.t_ex_40 = wx.StaticText(self, label=expend[0])
-        self.t_ex_41 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_40 = wx.StaticText(self, label=expend[4])
+        self.t_ex_41 = wx.StaticText(self, label=str(self.e_list[4]))
 
-        self.t_ex_50 = wx.StaticText(self, label=expend[0])
-        self.t_ex_51 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_50 = wx.StaticText(self, label=expend[5])
+        self.t_ex_51 = wx.StaticText(self, label=str(self.e_list[5]))
 
-        self.t_ex_60 = wx.StaticText(self, label=expend[0])
-        self.t_ex_61 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_60 = wx.StaticText(self, label=expend[6])
+        self.t_ex_61 = wx.StaticText(self, label=str(self.e_list[6]))
 
-        self.t_ex_70 = wx.StaticText(self, label=expend[0])
-        self.t_ex_71 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_70 = wx.StaticText(self, label=expend[7])
+        self.t_ex_71 = wx.StaticText(self, label=str(self.e_list[7]))
 
-        self.t_ex_80 = wx.StaticText(self, label=expend[0])
-        self.t_ex_81 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_80 = wx.StaticText(self, label=expend[8])
+        self.t_ex_81 = wx.StaticText(self, label=str(self.e_list[8]))
 
-        self.t_ex_90 = wx.StaticText(self, label=expend[0])
-        self.t_ex_91 = wx.StaticText(self, label=str(self.e_list[0]))
+        self.t_ex_90 = wx.StaticText(self, label=expend[9])
+        self.t_ex_91 = wx.StaticText(self, label=str(self.e_list[9]))
 
-        box3.AddMany([(self.t_ex),(self.t_ex_0,1,wx.EXPAND),
+        box6.AddMany([(self.t_ex),(self.t_ex_0,1,wx.EXPAND),
+                      (wx.StaticText(self)), (wx.StaticText(self)),
                       (self.t_ex_00),(self.t_ex_01,1,wx.EXPAND),
                       (self.t_ex_10),(self.t_ex_11,1,wx.EXPAND),
                       (self.t_ex_20),(self.t_ex_21,1,wx.EXPAND),
@@ -147,9 +123,13 @@ class AccountMonth(wx.Panel):
                       (self.t_ex_80),(self.t_ex_81,1,wx.EXPAND),
                       (self.t_ex_90),(self.t_ex_91,1,wx.EXPAND)])
 
-        box4 = wx.FlexGridSizer(11, 2, 5, 5)  # 用来展示总支出，每项支出
+        box3 = wx.StaticBoxSizer(wx.VERTICAL,self,label = '  ')
+        box3.Add(box6)
+
+        #用来展示总收入，每项收入
+        box7 = wx.FlexGridSizer(6, 4, 10, 10)
         self.t_ix = wx.StaticText(self, label=u'总收入')
-        self.t_ix_0 = wx.StaticText(self, label=str(self.i_count))
+        self.t_ix_0 = wx.StaticText(self, label=str(round(self.i_count,2)))
 
         self.t_ix_00 = wx.StaticText(self, label=imcome[0])
         self.t_ix_01 = wx.StaticText(self, label=str(self.i_list[0]))
@@ -181,7 +161,8 @@ class AccountMonth(wx.Panel):
         self.t_ix_90 = wx.StaticText(self, label=imcome[9])
         self.t_ix_91 = wx.StaticText(self, label=str(self.i_list[9]))
 
-        box4.AddMany([(self.t_ix), (self.t_ix_0, 1, wx.EXPAND),
+        box7.AddMany([(self.t_ix), (self.t_ix_0, 1, wx.EXPAND),
+                      (wx.StaticText(self)),(wx.StaticText(self)),
                       (self.t_ix_00), (self.t_ix_01, 1, wx.EXPAND),
                       (self.t_ix_10), (self.t_ix_11, 1, wx.EXPAND),
                       (self.t_ix_20), (self.t_ix_21, 1, wx.EXPAND),
@@ -192,12 +173,18 @@ class AccountMonth(wx.Panel):
                       (self.t_ix_70), (self.t_ix_71, 1, wx.EXPAND),
                       (self.t_ix_80), (self.t_ix_81, 1, wx.EXPAND),
                       (self.t_ix_90), (self.t_ix_91, 1, wx.EXPAND)])
+
+        box4 = wx.StaticBoxSizer(wx.VERTICAL,self, label =' ')
+        box4.Add(box7)
+
         box5 = wx.BoxSizer(wx.HORIZONTAL)
-        box5.Add(box3,flag = wx.LEFT,border = 20)
-        box5.Add(box4,flag = wx.LEFT,border = 20)
+        box5.Add(box3,flag = wx.LEFT,border = 50)
+        box5.AddSpacer(50)
+        box5.Add(box4,border = 50)
 
         box = wx.BoxSizer(wx.VERTICAL)
         box.AddSpacer(30)
+        #用来放置日期选择
         box1 = wx.BoxSizer(wx.HORIZONTAL)
         box1.AddSpacer(30)
         box1.Add(self.ch_year)
@@ -207,12 +194,10 @@ class AccountMonth(wx.Panel):
         box1.Add(self.ch_month)
         box1.AddSpacer(10)
         box1.Add(self.t_month)
+
         box.Add(box1)
-        box.Add(canvas,0,wx.ALL|wx.EXPAND,0)
-        box.Add(box2)
         box.Add(box5)
-
-
+        box.Add(canvas,0,wx.ALL|wx.EXPAND,0)
         self.SetSizer(box)
 
     def OnChoices1(self,e):
@@ -224,25 +209,18 @@ class AccountMonth(wx.Panel):
     def GetIncome(self):
         try:
             wb = load_workbook('./data/account.xlsx')
-            # print(1)
             ws = wb['收入']
             row = 3
             column = 1
             tody = self.X_year + '/' + self.X_month
             a = ws.cell(row=row, column=column)
-            # print(2)
             while a.value:
                 a = ws.cell(row=row, column=1)
                 time1 = str(ws.cell(row=row, column=1).value)
-                #print(time1)
                 if tody in time1:
                     kind2 = str(ws.cell(row=row, column=2).value)
-                    # print('1')
-                    #print(kind2)
                     for i in range(0, 9):
-                        #print('2')
                         if kind2 == imcome[i]:
-                            #print('3')
                             self.i_list[i] += float(ws.cell(row=row, column=3).value)
 
                 row += 1
@@ -262,8 +240,7 @@ class AccountMonth(wx.Panel):
         for i in range(0, 9):
             self.i_space_list[i] = self.i_list[i] / self.i_count
 
-        print(self.i_list)
-        print(self.i_space_list)
+
 
     def GetExpendture(self):
         try:
@@ -274,21 +251,13 @@ class AccountMonth(wx.Panel):
             column = 1
             tody = self.X_year + '/' + self.X_month
             a = ws.cell(row=row, column=column)
-            #print(2)
             while a.value:
                 a = ws.cell(row  =row,column = 1)
                 time1=str(ws.cell(row =row,column=1).value)
-                #print(time1)
-                #print(type(time1))
-                print(tody)
                 if tody in time1:
                     kind2= str(ws.cell(row =row,column = 2).value)
-                    #print('1')
-                    #print(kind2)
                     for i in range(0,9):
-                        #print('2')
                         if kind2 == expend[i]:
-                            print('3')
                             self.e_list[i]+=float(ws.cell(row=row,column=3).value)
 
                 row +=1
@@ -306,8 +275,6 @@ class AccountMonth(wx.Panel):
         for i in range(0, 9):
             self.e_count += self.e_list[i]
 
+
         for i in range(0, 9):
             self.e_space_list[i] = self.e_list[i] / self.e_count
-
-        #print(self.e_list)
-        #print(self.e_space_list)

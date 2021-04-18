@@ -2,14 +2,13 @@
 import wx
 from .generic_bitmap_button import GenericBitmapButton
 import wx.adv
-import datetime
 import time
 from .my_Validator import MyNumberValidator
 from openpyxl import load_workbook
-from wx import NewIdRef
 import wx.lib.buttons as buttons
 import images
 from wx import NewId
+from views.Dialogs import NotExsit,AddSuccess,WriteFail,IncompleteData
 
 expend = ['教育','餐饮','理财','日用','零食','交通','服饰美容','数码','住房','医疗']
 ID_00 = NewId()
@@ -22,14 +21,15 @@ ID_06 = NewId()
 ID_07 = NewId()
 ID_08 = NewId()
 ID_09 = NewId()
+
 class Expenditure(wx.Panel):
     def __init__(self,parent):
         super().__init__(parent)
 
         self.n_time = time.strftime('%Y-%m-%d', time.localtime())
-        self.n_kind = expend[0]
+        self.n_kind = expend[0]    #默认消费种类值
         self.n_acount = 0
-        self.n_remark = '无'
+        self.n_remark = '无'         #消费备注
         self.initUi()
         self.Center()
 
@@ -37,9 +37,10 @@ class Expenditure(wx.Panel):
         self.SetBackgroundColour("white")
 
         box1 = wx.GridSizer(4,5,5,10)
+
+        #生成按钮用来接受用户的输入
         self.t_0= wx.StaticText(self,label = expend[0])
         self.bt_0 = buttons.GenBitmapToggleButton(self, ID_00, None)
-        #self.Bind(wx.EVT_BUTTON, self.OnToggleButton, b)
         bmp = images._10.GetBitmap()
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
@@ -48,7 +49,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_0.SetBitmapSelected(bmp)
-        #self.bt_0.SetValue(True)
         self.bt_0.SetToggle(False)
         self.bt_0.SetInitialSize()
         self.bt_0.Bind(wx.EVT_BUTTON,self.KindSelect)
@@ -63,7 +63,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_1.SetBitmapSelected(bmp)
-        #self.bt_1.SetValue(True)
         self.bt_1.SetToggle(False)
         self.bt_1.SetInitialSize()
         self.bt_1.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -78,7 +77,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_2.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_2.SetToggle(False)
         self.bt_2.SetInitialSize()
         self.bt_2.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -93,7 +91,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_3.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_3.SetToggle(False)
         self.bt_3.SetInitialSize()
         self.bt_3.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -108,7 +105,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_4.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_4.SetToggle(False)
         self.bt_4.SetInitialSize()
         self.bt_4.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -123,7 +119,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_5.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_5.SetToggle(False)
         self.bt_5.SetInitialSize()
         self.bt_5.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -138,7 +133,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_6.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_6.SetToggle(False)
         self.bt_6.SetInitialSize()
         self.bt_6.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -153,7 +147,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_7.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_7.SetToggle(False)
         self.bt_7.SetInitialSize()
         self.bt_7.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -168,7 +161,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_8.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_8.SetToggle(False)
         self.bt_8.SetInitialSize()
         self.bt_8.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -183,7 +175,6 @@ class Expenditure(wx.Panel):
         mask = wx.Mask(bmp, wx.BLUE)
         bmp.SetMask(mask)
         self.bt_9.SetBitmapSelected(bmp)
-        # self.bt_1.SetValue(True)
         self.bt_9.SetToggle(False)
         self.bt_9.SetInitialSize()
         self.bt_9.Bind(wx.EVT_BUTTON, self.KindSelect)
@@ -205,6 +196,7 @@ class Expenditure(wx.Panel):
 
         box2 = wx.BoxSizer(wx.HORIZONTAL)
 
+        #消费时间
         self.time1 = wx.adv.DatePickerCtrl(self,style = wx.adv.DP_DROPDOWN
                                       | wx.adv.DP_SHOWCENTURY
                                       | wx.adv.DP_ALLOWNONE)
@@ -231,7 +223,7 @@ class Expenditure(wx.Panel):
         box3.Add(box2,flag = wx.ALIGN_CENTER)
         box3.Add(self.t_remarks,flag=wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT,border=20)
         box4= wx.BoxSizer(wx.HORIZONTAL)
-        box4.AddSpacer(600)
+        box4.AddSpacer(500)
         box4.Add(self.bt_commit,flag = wx.RIGHT,border = 10)
         box3.Add(box4,flag =wx.ALIGN_CENTER,border = 10)
 
@@ -244,11 +236,11 @@ class Expenditure(wx.Panel):
         self.n_remark = e.GetString()
 
     def OnDateSelect(self,e):
-        #print(str(e.GetString()))
         self.n_time = str(e.GetDate())[0:10]
-        print(self.n_time)
 
     def KindSelect(self,e):
+
+        #先将按钮设置全部设置为未选中
         self.bt_0.SetToggle(False)
         self.bt_1.SetToggle(False)
         self.bt_2.SetToggle(False)
@@ -259,10 +251,6 @@ class Expenditure(wx.Panel):
         self.bt_7.SetToggle(False)
         self.bt_8.SetToggle(False)
         self.bt_9.SetToggle(False)
-        #print(e.GetId)
-        #print(ID_03)
-        #print(type(e.GetId))
-        #print(type(ID_03))
         if e.GetId() == ID_00:
             self.bt_0.SetToggle(True)
             self.n_kind = expend[0]
@@ -275,7 +263,6 @@ class Expenditure(wx.Panel):
         if e.GetId() == ID_03:
             self.bt_3.SetToggle(True)
             self.n_kind =expend[3]
-            #print('good')
         if e.GetId() == ID_04:
             self.bt_4.SetToggle(True)
             self.n_kind =expend[4]
@@ -296,90 +283,62 @@ class Expenditure(wx.Panel):
             self.n_kind =expend[9]
 
 
-        #print(self.n_kind)
-
     def Commit(self,e):
 
-        print(self.n_time)
-        print('1')
+        self.excel_write()
 
+    def excel_write(self):
 
+        #写入excel表格中
         try:
             wb=load_workbook('./data/account.xlsx')
             ws=wb['支出']
-
-            c=ws['A1']
-            b=int(c.value)    #excel 单元格第一格用来记录上次写入的位置
+            b=int(ws['A1'].value)    #excel 单元格第一格用来记录上次写入的位置
             a=ws.cell(row = b,column = 1)
 
-
         except:
-            dlg = wx.MessageDialog(self, '文件打开失败',
-                                   '失败',
-                                   wx.OK | wx.ICON_INFORMATION
-                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                   )
+            dlg = NotExsit(None, -1)
             dlg.ShowModal()
             dlg.Destroy()
-            
+
+        #再一次判断b值是否设置有错，防止出现删除消费记录但未更新的情况
         while a.value:
-
             b+=1
-
             a=ws['A'+str(b)]
-
-            
             if b>=1500:
-                
                 break
 
 
         if self.n_kind and self.n_time and self.n_acount:
 
             try:
-
-                ws['A'+str(b)]=self.n_time
-                #print('1')
-                ws['B'+str(b)]=self.n_kind
-                #print('2')
-                ws['C'+str(b)]=self.n_acount
-                #print('3')
-                ws['D'+str(b)]=self.n_remark
-                #print('4')
+                g = str(b)
+                ws['A'+g]=self.n_time
+                ws['B'+g]=self.n_kind
+                ws['C'+g]=self.n_acount
+                ws['D'+g]=self.n_remark
                 ws['A1'] = b+1
 
                 wb.save('./data/account.xlsx')
-                dlg = wx.MessageDialog(self, '写入成功',
-                                       '成功',
-                                       wx.OK | wx.ICON_INFORMATION
-                                       # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                       )
+                dlg = AddSuccess(None, -1)
                 dlg.ShowModal()
                 dlg.Destroy()
 
+
             except:
-                dlg = wx.MessageDialog(self, '数据写入失败',
-                                       '失败',
-                                       wx.OK | wx.ICON_INFORMATION
-                                       # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                       )
+                dlg = WriteFail(None, -1)
                 dlg.ShowModal()
                 dlg.Destroy()
 
 
         else:
-            dlg = wx.MessageDialog(self, '请填写完整数据',
-                                   '失败',
-                                   wx.OK | wx.ICON_INFORMATION
-                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
-                                   )
+            dlg = IncompleteData(None,-1)
             dlg.ShowModal()
             dlg.Destroy()
 
         self.bt_commit.Enable(False)
         time.sleep(1)
         self.bt_commit.Enable(True)
-
 
 
 
