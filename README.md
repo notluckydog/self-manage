@@ -6,7 +6,7 @@ python wxpython
 项目功能：
 1.提供每日打卡功能，记录早起等习惯的养成，记录每日的心情与身体状况
 2.提供记账功能，以列表形式展示流水，图标形式展示每月收支
-3.提供一些贪吃蛇计算器之类小工具
+3.提供一些绘图板、图片转pdf之类小工具供自己使用
 4.展示室内环境状况（待完成）
 
 
@@ -14,6 +14,8 @@ python wxpython
 1.python作为主要开发语言
 2.wxpython库用来实现gui界面
 3.excel作为暂时数据储存介质，openpyxl库来操作excel表格
+4.pyinstaller用来打包成可执行.exe文件
+
 
 相关界面如下所示：
 打开软件主界面如下所示：
@@ -60,3 +62,8 @@ python wxpython
 
 电子时钟：
 ![输入图片描述](README_md_files%5C%E7%94%B5%E5%AD%90%E6%97%B6%E9%92%9F.png?v=1&type=image)
+
+注：
+1.因使用了pyzbar库，在进行打包会缺少libiconv.dll和libzbar-64.dll 文件，该两文件可在python安装目录下找到，需打包后复制到.exe文件同级目录下。
+2.使用pyinstaller库进行打包时，建议首先使用pyinstaller -F -w xxx.py进行打包，这样会以命令行的方式启动看到打包后出现的错误。
+3.dist目录下exe文件可直接使用
