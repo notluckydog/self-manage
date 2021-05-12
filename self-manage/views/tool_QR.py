@@ -31,9 +31,8 @@ class QR(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.Commit1, self.bt_commit1)
 
         box3 = wx.BoxSizer(wx.HORIZONTAL)
-        box3.AddSpacer(5)
         box3.Add(self.t_info1,flag = wx.EXPAND,border = 10)
-        box3.AddSpacer(95)
+        box3.AddSpacer(100)
         box3.Add(self.bt_commit1,flag = wx.RIGHT,border = 10)
 
         self.t_info = wx.TextCtrl(self,-1,u"输入信息")

@@ -98,7 +98,7 @@ class IncompleteData(wx.Dialog):
         path='./assets/image/悲伤.png'
         image = wx.StaticBitmap(self,
                                       wx.ID_ANY, wx.Bitmap(path, wx.BITMAP_TYPE_ANY))
-        sizer1.Add(image,flag = wx.ALIGN_CENTER,border=10)
-        sizer1.Add(sizer2,flag = wx.ALIGN_CENTER,border=10)
+        sizer1.Add(image,flag = wx.ALIGN_CENTER_HORIZONTAL,border=10)
+        sizer1.Add(sizer2,flag = wx.ALIGN_CENTER_HORIZONTAL,border=10)
 
         self.SetSizer(sizer1)

@@ -7,7 +7,7 @@ from .Dialogs import NotExsit, AddSuccess,HavedExit,BDOpenFail
 import sqlite3
 
 path1 = os.path.abspath('..')
-excel_path = './data/excel/2020-11.xlsx'
+excel_path = './data/2020-11.xlsx'
 
 sampleList = ['很好', '较好', '一般', '较差', '很差']
 
@@ -132,6 +132,7 @@ class ClockDaily(wx.Panel):
                 self.is_account = '是'
 
         self.excel_save()
+        self.db_save()
 
         #self.db_save()
 
@@ -197,21 +198,52 @@ class ClockDaily(wx.Panel):
         time1 = time.strftime('%Y-%m-%d', time.localtime())
         try:
             #尝试连接数据库
-            conn = sqlite3.connect('test1.db')
-            print('1')
+            conn = sqlite3.connect('my_record.db')
+
             cursor = conn.cursor()     #创建游标
-            print('2')
+
             #判断表是否存在，若不存在，则新建该表
             cursor.execute(
-            '''CREATE TABLE IF NOT EXISIT clock_daily
-            (x_time text,get_up text,sleep text, Japanese text,English text,study text,
-            reading text,account text,mood text,body text)'''
+            '''CREATE TABLE IF NOT EXISTS clock_daily
+            (ID INT PRIMARY KEY     ,
+            x_time TEXT NOT NULL,
+            get_up TEXT MOT NULL ,
+            sleep TEXT MOT NULL, 
+            Japanese TEXT MOT NULL,
+            English TEXT MOT NULL,
+            study TEXT MOT NULL,
+            reading TEXT MOT NULL,
+            account TEXT MOT NULL,
+            mood TEXT MOT NULL,
+            body TEXT MOT NULL)'''
             )
-            print('3')
-            cursor.execute('INSERT INTO clock_daily VALUES '
-                           '(?,?,?,?,?,?,?)',(time1,self.is_getup,self.is_sleep
+
+
+            #判断是否存在该条数据，如果存在，则弹出提示说今天已打卡
+            c = cursor.execute("SELECT x_time FROM clock_daily")
+            is_exist = False
+
+            for row in c :
+
+                if row[0] == time1 :
+                    is_exist = True
+                    break
+
+
+            if is_exist:
+                # 表示存在该条数据
+                dlg = HavedExit(None, -1)
+                dlg.ShowModal()
+                dlg.Destroy()
+
+            else:
+                cursor.execute('INSERT INTO clock_daily(x_time,get_up,sleep,Japanese,English,study,reading,account,mood,body)'
+                           ' VALUES (?,?,?,?,?,?,?,?,?,?)',(time1,self.is_getup,self.is_sleep
                             ,self.is_Japanese,self.is_English,self.is_study,self.is_reading,self.is_account,self.mood,self.body))
-            print('4')
+
+                conn.commit()
+                conn.close()
+
         except:
             dlg = BDOpenFail(None, -1)
             dlg.ShowModal()

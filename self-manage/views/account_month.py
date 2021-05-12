@@ -1,3 +1,6 @@
+import copy
+import sqlite3
+
 import wx
 from matplotlib.backends import backend_wxagg
 from matplotlib.figure import Figure
@@ -19,10 +22,9 @@ class AccountMonth(wx.Panel):
         self.time_todey = time.strftime('%Y-%m-%d', time.localtime())
         self.X_year = self.time_todey[0:4]
         self.X_month = self.time_todey[5:7]
-        if self.X_month in ['10','11','12']:
-            pass
-        else:
-            self.X_month = self.X_month[1:2]
+
+        self.expend = [u'教育',u'餐饮',u'理财',u'日用',u'零食',u'交通',u'服饰美容',u'数码',u'住房',u'医疗']
+        self.income = [u'薪资',u'退款',u'转卖',u'兼职',u'还钱',u'借入',u'意外所得',u'报销',u'投资',u'其他']
         self.i_list = [0.1]*10     #用来记录收入列表
         self.e_list = [0.1]*10     #用来记录支出列表
         self.i_space_list = [0.1]*10   #用来记录收入相关占比
@@ -36,10 +38,12 @@ class AccountMonth(wx.Panel):
         self.SetBackgroundColour('white')
 
         # 准备数据
-        self.GetIncome()
-        self.GetExpendture()
+        self.get_income_db()
+        self.get_expenditrue_db()
         colors = ['dodgerblue', 'orangered','green','lime','yellow',
                   'limegreen', 'violet', 'gold', 'r','blue',]
+        #判断消费数据是否为0.1，如果是则删除该项数据
+
 
         #用来以饼状图的形式展示数据
         self.f = Figure(figsize=(5,6),dpi=100,tight_layout=True)
@@ -48,13 +52,13 @@ class AccountMonth(wx.Panel):
 
         self.sub = self.f.add_subplot(2,2,1,title ="支出明细")
 
-        self.sub.pie(self.e_list, self.e_space_list, expend, colors,
+        self.sub.pie(self.e_list, self.e_space_list, self.expend, colors,
                "%.1f%%", shadow=True, labeldistance=1.1,
                      radius=2,startangle=90)
         self.sub.axis("equal")
 
         self.sub = self.f.add_subplot(2,2,2,title = "收入明细")
-        self.sub.pie(self.i_list, self.i_space_list, imcome, colors,
+        self.sub.pie(self.i_list, self.i_space_list, self.income, colors,
                "%.1f%%", shadow=True, labeldistance=1.1,
                      radius=2,startangle=90)
 
@@ -206,27 +210,40 @@ class AccountMonth(wx.Panel):
     def OnChoices2(self,e):
         self.X_month = e.GetString()
 
-    def GetIncome(self):
-        try:
-            wb = load_workbook('./data/account.xlsx')
-            ws = wb['收入']
-            row = 3
-            column = 1
-            tody = self.X_year + '/' + self.X_month
-            a = ws.cell(row=row, column=column)
-            while a.value:
-                a = ws.cell(row=row, column=1)
-                time1 = str(ws.cell(row=row, column=1).value)
-                if tody in time1:
-                    kind2 = str(ws.cell(row=row, column=2).value)
-                    for i in range(0, 9):
-                        if kind2 == imcome[i]:
-                            self.i_list[i] += float(ws.cell(row=row, column=3).value)
+    def get_income_db(self):
+        #从数据库读取数据
+        tody = self.X_year + '-' + self.X_month
 
-                row += 1
+
+        try:
+            conn = sqlite3.connect('my_record.db')
+
+            c = conn.cursor()
+
+            c.execute("SELECT XTime,KIND,ACCOUNT FROM INCOME")
+
+            # 循环获取前100条的数据
+            while True:
+                batch = c.fetchmany(100)
+                for row in batch:
+
+                    if tody in row[0]:
+                        if row[1] in imcome:
+                            i = imcome.index(row[1])
+                            self.i_list[i] +=row[2]
+
+                #如果没有数据
+                if not batch:
+                    break
+
+            for i in range(0, 9):
+                self.i_count += self.i_list[i]
+
+            for i in range(0, 9):
+                self.i_space_list[i] = self.i_list[i] / self.i_count
 
         except:
-            dlg = wx.MessageDialog(self, '文件打开失败',
+            dlg = wx.MessageDialog(self, '数据读取失败',
                                    '失败',
                                    wx.OK | wx.ICON_INFORMATION
                                    # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
@@ -234,36 +251,41 @@ class AccountMonth(wx.Panel):
             dlg.ShowModal()
             dlg.Destroy()
 
-        for i in range(0, 9):
-            self.i_count += self.i_list[i]
-
-        for i in range(0, 9):
-            self.i_space_list[i] = self.i_list[i] / self.i_count
-
-
-
-    def GetExpendture(self):
+    def get_expenditrue_db(self):
+        #从数据库中获取消费数据
+        tody = self.X_year + '-' + self.X_month
         try:
-            wb = load_workbook('./data/account.xlsx')
-            #print(1)
-            ws = wb['支出']
-            row = 3
-            column = 1
-            tody = self.X_year + '/' + self.X_month
-            a = ws.cell(row=row, column=column)
-            while a.value:
-                a = ws.cell(row  =row,column = 1)
-                time1=str(ws.cell(row =row,column=1).value)
-                if tody in time1:
-                    kind2= str(ws.cell(row =row,column = 2).value)
-                    for i in range(0,9):
-                        if kind2 == expend[i]:
-                            self.e_list[i]+=float(ws.cell(row=row,column=3).value)
+            conn = sqlite3.connect('my_record.db')
 
-                row +=1
+            c = conn.cursor()
+
+            c.execute("SELECT XTime,KIND,ACCOUNT FROM EXPENDITURES")
+
+            # 循环获取前100条的数据
+            while True:
+                batch = c.fetchmany(100)
+                for row in batch:
+                    if tody in row[0]:
+                        if row[1] in expend:
+                            i = expend.index(row[1])
+                            self.e_list[i] += row[2]
+
+                # 如果没有数据
+                if not batch:
+                    break
+            #对某些没有该项数据的数据进行处理，删除该项，绘图时不进行绘制
+            #先复制消费支出也就是e_list项
+
+
+
+            for i in range(0, 9):
+                self.e_count += self.e_list[i]
+
+            for i in range(0, 9):
+                self.e_space_list[i] = self.e_list[i] / self.e_count
 
         except:
-            dlg = wx.MessageDialog(self, '文件打开失败',
+            dlg = wx.MessageDialog(self, '数据读取失败',
                                    '失败',
                                    wx.OK | wx.ICON_INFORMATION
                                    # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
@@ -272,9 +294,3 @@ class AccountMonth(wx.Panel):
             dlg.Destroy()
 
 
-        for i in range(0, 9):
-            self.e_count += self.e_list[i]
-
-
-        for i in range(0, 9):
-            self.e_space_list[i] = self.e_list[i] / self.e_count

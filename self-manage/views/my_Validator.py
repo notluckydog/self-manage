@@ -1,6 +1,8 @@
 import wx
 
-class MyNumberValidator(wx.Validator): # 创建验证器子类
+class MyNumberValidator(wx.Validator):
+	# 创建验证器子类
+	#在输入金额的时候，规范输出格式
 	def __init__(self):
 		wx.Validator.__init__(self)
 		self.ValidInput = ['.','0','1','2','3','4','5','6','7','8','9']

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sqlite3
+
 import wx
 from .generic_bitmap_button import GenericBitmapButton
 import wx.adv
@@ -10,7 +12,7 @@ import images
 from wx import NewId
 from views.Dialogs import NotExsit,AddSuccess,WriteFail,IncompleteData
 
-expend = ['教育','餐饮','理财','日用','零食','交通','服饰美容','数码','住房','医疗']
+expend = [u'教育',u'餐饮',u'理财',u'日用',u'零食',u'交通',u'服饰美容',u'数码',u'住房',u'医疗']
 ID_00 = NewId()
 ID_01 = NewId()
 ID_02 = NewId()
@@ -285,7 +287,66 @@ class Expenditure(wx.Panel):
 
     def Commit(self,e):
 
-        self.excel_write()
+
+        self.db_write()
+
+    def db_write(self):
+        # 使用该语句如果不存在该数据库则自动生成一个数据库
+
+        if self.n_kind and self.n_time and self.n_acount:
+            try:
+                conn = sqlite3.connect('my_record.db')
+
+                c = conn.cursor()
+
+                # 消费记录
+                c.execute('''CREATE TABLE IF NOT EXISTS EXPENDITURES
+                       (ID INT PRIMARY KEY     ,
+                       XTime          TEXT    NOT NULL,
+                       KIND            TEXT     NOT NULL,
+                       ACCOUNT        DOUBLE   NOT NULL,
+                       REMARK         TEXT     NOT NULL);''')
+
+
+                c.execute("INSERT INTO EXPENDITURES(XTime,KIND,ACCOUNT,REMARK ) VALUES (?,?,?,?)",
+                          (self.n_time,self.n_kind,self.n_acount,self.n_remark))
+
+                conn.commit()
+                conn.close()
+
+                dlg = AddSuccess(None, -1)
+                dlg.ShowModal()
+                dlg.Destroy()
+
+                # 设置禁用时间
+                self.bt_commit.Enable(False)
+                time.sleep(1)
+                self.bt_commit.Enable(True)
+
+            except:
+                dlg = WriteFail(None, -1)
+                dlg.ShowModal()
+                dlg.Destroy()
+
+
+
+                # 设置禁用时间
+                self.bt_commit.Enable(False)
+                time.sleep(1)
+                self.bt_commit.Enable(True)
+
+        else:
+            dlg = IncompleteData(None, -1)
+            dlg.ShowModal()
+            dlg.Destroy()
+
+            #设置禁用时间
+            self.bt_commit.Enable(False)
+            time.sleep(1)
+            self.bt_commit.Enable(True)
+
+
+
 
     def excel_write(self):
 

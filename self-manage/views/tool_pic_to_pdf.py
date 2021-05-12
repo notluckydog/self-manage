@@ -7,6 +7,10 @@ wildcard = "jpg   (*.jpg)|*.jpg|"     \
            "png   (*.png)|*.png|" \
            "All files (*.*)|*.*"
 
+wildcard1 = "pdf    (*.pdf)|*.pdf|"   \
+           "All files (*.*)|*.*"
+
+
 class Pic_to_PDF(wx.Panel):
     def __init__(self,parent):
         super().__init__(parent)
@@ -63,7 +67,7 @@ class Pic_to_PDF(wx.Panel):
     def path_chose(self,e):
         dlg = wx.FileDialog(
             self, message="Save file as ...", defaultDir=os.getcwd(),
-            defaultFile="", wildcard=wildcard, style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+            defaultFile="", wildcard=wildcard1, style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
         )
 
         dlg.SetFilterIndex(2)

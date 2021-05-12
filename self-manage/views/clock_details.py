@@ -1,3 +1,5 @@
+import sqlite3
+
 import matplotlib
 import wx
 import wx.adv
@@ -6,7 +8,7 @@ from matplotlib.figure import Figure
 from openpyxl import load_workbook
 from views.Dialogs import NotExsit
 
-excel_path = './data/excel/2020-11.xlsx'
+excel_path = './data/2020-11.xlsx'
 
 class ClockDetail(wx.Panel):
 
@@ -23,14 +25,18 @@ class ClockDetail(wx.Panel):
 
 
         #获取相关数据
-        data_mood,data_body,data_time = self.get_mood()
+        data_mood,data_body,data_time = self.get_mood_db()
         self.f = Figure(figsize=(20,6),dpi=100,tight_layout=True)
+        #self.f.xticks(rotations =270)
+        self.f.autofmt_xdate(rotation=180)    #自动旋转xlabel
         matplotlib.rcParams['font.sans-serif'] = ['SimHei']  # 用黑体显示中文
         matplotlib.rcParams['axes.unicode_minus'] = False
-        self.sub = self.f.add_subplot(2, 2, 1, title="身心状况")
+        self.sub = self.f.add_subplot(2, 2, 1, title="身心状况 ")
         self.sub.plot(data_time,data_mood,color ='b',label = '心情状况')
+        #self.sub.set_xticklabels(rotation =40)
         self.sub.plot(data_time,data_body,color ='g',label = '身体状况')
-        #self.sub.autofmt_xdate()
+        self.sub.legend()         #显示标签
+
         self.sub.grid(True)
         self.sub.set_xlabel('时间')
         self.sub.set_ylabel('状况')
@@ -39,11 +45,11 @@ class ClockDetail(wx.Panel):
 
 
         #获取相关信息
-        get_up_num = self.get_data(2)
-        sleep_num = self.get_data(3)
-        Janpenese_num = self.get_data(4)
-        english_num = self.get_data(5)
-        account_num = self.get_data(8)
+        get_up_num = self.get_data_db(0)
+        sleep_num = self.get_data_db(1)
+        Janpenese_num = self.get_data_db(2)
+        english_num = self.get_data_db(3)
+        account_num = self.get_data_db(4)
 
 
         font1 = wx.Font(16, wx.DEFAULT, style=wx.NORMAL, weight=wx.BOLD, underline=False)
@@ -119,62 +125,67 @@ class ClockDetail(wx.Panel):
 
         self.SetSizer(boxsizer)
 
-    def get_data(self,colu):
-        #用来返回坚持天数
-        #为了复用，采用一个函数,row为列号
-        #输入不同的参数，得到不同的结果
-        #从最新的一条数据开始，向上查找，若表格内信息不是'是',则退出
-        count =0      #用来计数
-        try:
-            wb = load_workbook(excel_path)
-            ws = wb['每日打卡']
-            b = int(ws['A1'].value)  # excel 单元格第一格用来记录上次写入的位置
-            a = ws.cell(row=b, column=colu)
 
+    def get_data_db(self,colu):
+
+        # 用来返回坚持天数
+        # 为了复用，采用一个函数,row为列号
+        # 输入不同的参数，得到不同的结果
+        # 从最新的一条数据开始，向上查找，若表格内信息不是'是',则退出
+        # 从数据库中获取数据
+        count = 0 #用来计数
+        try:
+            # 尝试连接数据库
+            conn = sqlite3.connect('my_record.db')
+            # 创建游标
+            cursor = conn.cursor()
+
+            c = cursor.execute("SELECT get_up,sleep,Japanese,English,account FROM clock_daily")
+            #获取前100条的数据
+            while True:
+                batch = c.fetchmany(100)
+                for row in batch:
+                    if row[colu] =='是':
+                        count +=1
+
+                if not batch:
+                    break
+
+                return str(count)
         except:
-            return -1
+            dlg = NotExsit(None, -1)
+            dlg.ShowModal()
+            dlg.Destroy()
 
-        while a.value=='是' and b>5:
-            count+=1
-            b-=1
-            a = ws.cell(row = b,column = colu)
-        return str(count)
 
-    def get_mood(self):
-        #用来返回心情状况与身体状况
-        #遍历表格，将状况从很好、较好、一般、较差、很差转换成-2、-1、0、1、2
-        #只返回六十条数据，如果数据量不够那就有多少条数据就读取多少条数据
+    def get_mood_db(self):
+        #从数据库中读取心情状况
 
-        mood =[0*10]
-        body =[0*10]
-        X_time =[0*10]
-        t_b =6
-        #打开excel表格
+        mood = []
+        body = []
+        X_time = []
         try:
-            wb = load_workbook(excel_path)
-            ws = wb['每日打卡']
-            b =int(ws['A1'].value)      #用来读取终止的位置
+            # 尝试连接数据库
+            conn = sqlite3.connect('my_record.db')
+            # 创建游标
+            cursor = conn.cursor()
+
+            c = cursor.execute("SELECT x_time,mood ,body FROM clock_daily")
+            #读取前二十条数据
+            batch = c.fetchmany(20)
+
+            for row in batch:
+                X_time.append(row[0])
+                mood.append(self.str_to_num(row[1]))
+                body.append(self.str_to_num(row[2]))
+
+            return mood,body,X_time
 
         except:
             dlg = NotExsit(None, -1)
             dlg.ShowModal()
             dlg.Destroy()
-            return mood,body,X_time
-        n_count =0    #用来计数，如果数据超过60条，就不再进行查找
-        if b>66:
-            n_count =b-60
 
-        else:
-            n_count =6
-
-        g = b
-        for i in range(n_count,b+1):
-            X_time.append(ws.cell(g,1).value)
-            mood.append(self.str_to_num(ws.cell(g,9).value))
-            body.append(self.str_to_num(ws.cell(g,10).value))
-            g -=1
-
-        return mood,body,X_time
 
     def str_to_num(self,t):
         #用来将'很好'等字符串转换为数字

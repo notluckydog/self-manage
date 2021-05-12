@@ -1,3 +1,5 @@
+import sqlite3
+
 import wx
 from matplotlib.backends import backend_wxagg
 from matplotlib.figure import Figure
@@ -32,8 +34,8 @@ class AccountYear(wx.Panel):
         self.SetBackgroundColour('white')
 
         # 准备数据
-        self.GetIncome()
-        self.GetExpendture()
+        self.get_expenditrue_db()
+        self.get_income_db()
         colors = ['dodgerblue', 'orangered','green','lime','yellow',
                   'limegreen', 'violet', 'gold', 'r','blue',]
 
@@ -192,6 +194,81 @@ class AccountYear(wx.Panel):
 
     def OnChoices1(self,e):
         self.X_year = e.GetString()
+
+    def get_income_db(self):
+        #从数据库读取数据
+        tody = self.X_year
+        try:
+            conn = sqlite3.connect('my_record.db')
+
+            c = conn.cursor()
+
+            c.execute("SELECT XTime,KIND,ACCOUNT FROM INCOME")
+
+            # 循环获取前100条的数据
+            while True:
+                batch = c.fetchmany(100)
+                for row in batch:
+                    if tody in row[0]:
+                        if row[1] in imcome:
+                            i = imcome.index(row[1])
+                            self.i_list[i] +=row[2]
+
+                #如果没有数据
+                if not batch:
+                    break
+
+            for i in range(0, 9):
+                self.i_count += self.i_list[i]
+
+            for i in range(0, 9):
+                self.i_space_list[i] = self.i_list[i] / self.i_count
+
+        except:
+            dlg = wx.MessageDialog(self, '数据读取失败',
+                                   '失败',
+                                   wx.OK | wx.ICON_INFORMATION
+                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
+                                   )
+            dlg.ShowModal()
+            dlg.Destroy()
+
+    def get_expenditrue_db(self):
+        #从数据库中获取消费数据
+        tody = self.X_year
+        try:
+            conn = sqlite3.connect('my_record.db')
+
+            c = conn.cursor()
+
+            c.execute("SELECT XTime,KIND,ACCOUNT FROM EXPENDITURES")
+
+            # 循环获取前100条的数据
+            while True:
+                batch = c.fetchmany(100)
+                for row in batch:
+                    if tody in row[0]:
+                        if row[1] in expend:
+                            i = expend.index(row[1])
+                            self.e_list[i] += row[2]
+
+                # 如果没有数据
+                if not batch:
+                    break
+
+            for i in range(0, 9):
+                self.e_count += self.e_list[i]
+
+            for i in range(0, 9):
+                self.e_space_list[i] = self.e_list[i] / self.e_count
+        except:
+            dlg = wx.MessageDialog(self, '数据读取失败',
+                                   '失败',
+                                   wx.OK | wx.ICON_INFORMATION
+                                   # wx.YES_NO | wx.NO_DEFAULT | wx.CANCEL | wx.ICON_INFORMATION
+                                   )
+            dlg.ShowModal()
+            dlg.Destroy()
 
 
     def GetIncome(self):
