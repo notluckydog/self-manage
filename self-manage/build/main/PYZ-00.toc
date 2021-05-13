@@ -286,6 +286,10 @@
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\__init__.py',
    'PYMODULE'),
+  ('pkg_resources._vendor.packaging.__about__',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\__about__.py',
+   'PYMODULE'),
   ('pkg_resources._vendor.pyparsing',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\pyparsing.py',
@@ -305,53 +309,49 @@
   ('ctypes.macholib.framework',
    'C:\\sofeware\\python\\lib\\ctypes\\macholib\\framework.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.packaging.__about__',
+  ('pkg_resources._vendor.packaging.utils',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\__about__.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.requirements',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\requirements.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.markers',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\markers.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.specifiers',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\specifiers.py',
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\utils.py',
    'PYMODULE'),
   ('pkg_resources._vendor.packaging._compat',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\_compat.py',
    'PYMODULE'),
+  ('pkg_resources._vendor.packaging.markers',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\markers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.requirements',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\requirements.py',
+   'PYMODULE'),
   ('pkg_resources._vendor.packaging.version',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\version.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging._structures',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\_structures.py',
    'PYMODULE'),
   ('pkg_resources._vendor',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\__init__.py',
    'PYMODULE'),
+  ('pkg_resources._vendor.packaging._structures',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\_structures.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.specifiers',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\specifiers.py',
+   'PYMODULE'),
   ('pkg_resources._vendor.six',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\six.py',
    'PYMODULE'),
-  ('pkg_resources._vendor.appdirs',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\appdirs.py',
-   'PYMODULE'),
-  ('pkg_resources._vendor.packaging.utils',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\utils.py',
-   'PYMODULE'),
   ('pkg_resources._vendor.packaging',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.appdirs',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\setuptools-40.8.0-py3.7.egg\\pkg_resources\\_vendor\\appdirs.py',
    'PYMODULE'),
   ('sysconfig', 'C:\\sofeware\\python\\lib\\sysconfig.py', 'PYMODULE'),
   ('_osx_support', 'C:\\sofeware\\python\\lib\\_osx_support.py', 'PYMODULE'),
@@ -408,10 +408,10 @@
    'PYMODULE'),
   ('imp', 'C:\\sofeware\\python\\lib\\imp.py', 'PYMODULE'),
   ('pathlib', 'C:\\sofeware\\python\\lib\\pathlib.py', 'PYMODULE'),
+  ('typing', 'C:\\sofeware\\python\\lib\\typing.py', 'PYMODULE'),
   ('_py_abc', 'C:\\sofeware\\python\\lib\\_py_abc.py', 'PYMODULE'),
   ('tracemalloc', 'C:\\sofeware\\python\\lib\\tracemalloc.py', 'PYMODULE'),
   ('stringprep', 'C:\\sofeware\\python\\lib\\stringprep.py', 'PYMODULE'),
-  ('typing', 'C:\\sofeware\\python\\lib\\typing.py', 'PYMODULE'),
   ('views.login',
    'D:\\github\\self-manage\\self-manage\\views\\login.py',
    'PYMODULE'),
@@ -952,52 +952,94 @@
   ('PIL.Image',
    'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\Image.py',
    'PYMODULE'),
-  ('PIL.PcxImagePlugin',
+  ('PIL.GribStubImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\PcxImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\GribStubImagePlugin.py',
    'PYMODULE'),
   ('PIL.ImageFile',
    'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\ImageFile.py',
    'PYMODULE'),
-  ('PIL.DcxImagePlugin',
+  ('PIL.PixarImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\DcxImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\PixarImagePlugin.py',
    'PYMODULE'),
-  ('PIL.IptcImagePlugin',
+  ('PIL.PcdImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\IptcImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\PcdImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PsdImagePlugin',
+  ('PIL.WmfImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\PsdImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.Jpeg2KImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\Jpeg2KImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\WmfImagePlugin.py',
    'PYMODULE'),
   ('PIL.EpsImagePlugin',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\EpsImagePlugin.py',
    'PYMODULE'),
-  ('PIL.GribStubImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\GribStubImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.ImtImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\ImtImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.MpegImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\MpegImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.XbmImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\XbmImagePlugin.py',
-   'PYMODULE'),
   ('PIL.MspImagePlugin',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\MspImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SpiderImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\SpiderImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImageTk',
+   'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\ImageTk.py',
+   'PYMODULE'),
+  ('PIL.MicImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\MicImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PcxImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\PcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MpoImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\MpoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Hdf5StubImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DcxImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\DcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Jpeg2KImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\Jpeg2KImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XVThumbImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\XVThumbImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DdsImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\DdsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SunImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\SunImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GbrImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\GbrImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.WebPImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\WebPImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcnsImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\IcnsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.features',
+   'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\features.py',
+   'PYMODULE'),
+  ('PIL.FliImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\FliImagePlugin.py',
    'PYMODULE'),
   ('PIL.PdfImagePlugin',
    'd:\\programs\\self '
@@ -1010,119 +1052,77 @@
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\ImageSequence.py',
    'PYMODULE'),
-  ('PIL.MicImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\MicImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.FpxImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\FpxImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.CurImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\CurImagePlugin.py',
-   'PYMODULE'),
   ('PIL.FitsStubImagePlugin',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\FitsStubImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.PalmImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\PalmImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.MpoImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\MpoImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.BlpImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\BlpImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.SunImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\SunImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.DdsImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\DdsImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.SpiderImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\SpiderImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.ImageTk',
-   'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\ImageTk.py',
-   'PYMODULE'),
-  ('PIL.FliImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\FliImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.TgaImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\TgaImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.XVThumbImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\XVThumbImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.ImImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\ImImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.XpmImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\XpmImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.SgiImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\SgiImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.WmfImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\WmfImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.WebPImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\WebPImagePlugin.py',
-   'PYMODULE'),
-  ('PIL.McIdasImagePlugin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\McIdasImagePlugin.py',
    'PYMODULE'),
   ('PIL.FtexImagePlugin',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\FtexImagePlugin.py',
    'PYMODULE'),
-  ('PIL.Hdf5StubImagePlugin',
+  ('PIL.SgiImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\SgiImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PcdImagePlugin',
+  ('PIL.MpegImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\PcdImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\MpegImagePlugin.py',
    'PYMODULE'),
-  ('PIL.PixarImagePlugin',
+  ('PIL.CurImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\PixarImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\CurImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcoImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\IcoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XbmImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\XbmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PalmImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\PalmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TgaImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\TgaImagePlugin.py',
    'PYMODULE'),
   ('PIL.BufrStubImagePlugin',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\PIL\\BufrStubImagePlugin.py',
    'PYMODULE'),
-  ('PIL.IcnsImagePlugin',
+  ('PIL.ImImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\IcnsImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\ImImagePlugin.py',
    'PYMODULE'),
-  ('PIL.features',
-   'd:\\programs\\self management\\venv\\lib\\site-packages\\PIL\\features.py',
-   'PYMODULE'),
-  ('PIL.GbrImagePlugin',
+  ('PIL.BlpImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\GbrImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\BlpImagePlugin.py',
    'PYMODULE'),
-  ('PIL.IcoImagePlugin',
+  ('PIL.ImtImagePlugin',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\PIL\\IcoImagePlugin.py',
+   'management\\venv\\lib\\site-packages\\PIL\\ImtImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PsdImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\PsdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FpxImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\FpxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IptcImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\IptcImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.McIdasImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\McIdasImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XpmImagePlugin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\PIL\\XpmImagePlugin.py',
    'PYMODULE'),
   ('PIL.TiffImagePlugin',
    'd:\\programs\\self '
@@ -1393,57 +1393,33 @@
   ('lxml',
    'd:\\programs\\self management\\venv\\lib\\site-packages\\lxml\\__init__.py',
    'PYMODULE'),
-  ('lxml.ElementInclude',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\ElementInclude.py',
-   'PYMODULE'),
-  ('lxml.html.ElementSoup',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\ElementSoup.py',
-   'PYMODULE'),
-  ('lxml.pyclasslookup',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\pyclasslookup.py',
-   'PYMODULE'),
   ('lxml.html.html5parser',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\lxml\\html\\html5parser.py',
-   'PYMODULE'),
-  ('lxml.html.formfill',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\formfill.py',
-   'PYMODULE'),
-  ('lxml.isoschematron',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\isoschematron\\__init__.py',
-   'PYMODULE'),
-  ('lxml.html._diffcommand',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\_diffcommand.py',
-   'PYMODULE'),
-  ('lxml.html._setmixin',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\_setmixin.py',
-   'PYMODULE'),
-  ('lxml.html.defs',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\defs.py',
    'PYMODULE'),
   ('lxml.html._html5builder',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\lxml\\html\\_html5builder.py',
    'PYMODULE'),
-  ('lxml.html.usedoctest',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\usedoctest.py',
-   'PYMODULE'),
-  ('lxml.includes',
-   'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\includes\\__init__.py',
-   'PYMODULE'),
   ('lxml.cssselect',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\lxml\\cssselect.py',
+   'PYMODULE'),
+  ('lxml.isoschematron',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\isoschematron\\__init__.py',
+   'PYMODULE'),
+  ('lxml.html.formfill',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\formfill.py',
+   'PYMODULE'),
+  ('lxml.ElementInclude',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\ElementInclude.py',
+   'PYMODULE'),
+  ('lxml.html.usedoctest',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\usedoctest.py',
    'PYMODULE'),
   ('lxml.usedoctest',
    'd:\\programs\\self '
@@ -1454,17 +1430,41 @@
    'management\\venv\\lib\\site-packages\\lxml\\doctestcompare.py',
    'PYMODULE'),
   ('cgi', 'C:\\sofeware\\python\\lib\\cgi.py', 'PYMODULE'),
-  ('lxml.html.soupparser',
+  ('lxml.html.ElementSoup',
    'd:\\programs\\self '
-   'management\\venv\\lib\\site-packages\\lxml\\html\\soupparser.py',
+   'management\\venv\\lib\\site-packages\\lxml\\html\\ElementSoup.py',
    'PYMODULE'),
   ('lxml.html',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\lxml\\html\\__init__.py',
    'PYMODULE'),
+  ('lxml.pyclasslookup',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\pyclasslookup.py',
+   'PYMODULE'),
   ('lxml.html.builder',
    'd:\\programs\\self '
    'management\\venv\\lib\\site-packages\\lxml\\html\\builder.py',
+   'PYMODULE'),
+  ('lxml.html._setmixin',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\_setmixin.py',
+   'PYMODULE'),
+  ('lxml.html.defs',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\defs.py',
+   'PYMODULE'),
+  ('lxml.includes',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\includes\\__init__.py',
+   'PYMODULE'),
+  ('lxml.html.soupparser',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\soupparser.py',
+   'PYMODULE'),
+  ('lxml.html._diffcommand',
+   'd:\\programs\\self '
+   'management\\venv\\lib\\site-packages\\lxml\\html\\_diffcommand.py',
    'PYMODULE'),
   ('pikepdf.models.matrix',
    'd:\\programs\\self '

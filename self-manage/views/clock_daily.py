@@ -131,7 +131,7 @@ class ClockDaily(wx.Panel):
             if self.account.GetValue():
                 self.is_account = '是'
 
-        self.excel_save()
+        #self.excel_save()
         self.db_save()
 
         #self.db_save()

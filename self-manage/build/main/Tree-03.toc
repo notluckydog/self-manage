@@ -1,6 +1,6 @@
 ('D:\\github\\self-manage\\self-manage\\build\\main\\setuptools-40.8.0-py3.7.egg',
  None,
- {'*.pyd', '*.cp37-win_amd64.pyd', '*.py', '*.pyc', 'EGG-INFO', '*.pyw'},
+ {'*.pyd', '*.cp37-win_amd64.pyd', '*.pyw', 'EGG-INFO', '*.pyc', '*.py'},
  'DATA',
  [('setuptools\\cli-32.exe',
    'D:\\github\\self-manage\\self-manage\\build\\main\\setuptools-40.8.0-py3.7.egg\\setuptools\\cli-32.exe',
